@@ -31,7 +31,10 @@ Automated end-to-end testing suite for the **WebdriverIO Native Demo App** on An
 │   └── specs/
 │       └── app.spec.ts          # 5 automated test scenarios
 ├── tsconfig.json
-└── wdio.conf.ts                 # WebdriverIO & BrowserStack configuration
+├── wdio.shared.conf.ts          # Base shared WebdriverIO options
+├── wdio.browserstack.conf.ts    # BrowserStack cloud configuration
+├── wdio.local.conf.ts           # Local Appium & Android Emulator config
+└── wdio.conf.ts                 # Default entry point
 ```
 
 ---
@@ -81,6 +84,9 @@ Create a `.env` file in the project root:
 BROWSERSTACK_USERNAME=your_username
 BROWSERSTACK_ACCESS_KEY=your_access_key
 BROWSERSTACK_APP_ID=bs://your_uploaded_app_hash
+
+# Optional: Path to local APK for emulator execution
+LOCAL_APP_PATH=./apps/app.apk
 ```
 
 > **Note:** Never commit your `.env` file or expose your BrowserStack credentials in the repository.
@@ -97,16 +103,18 @@ npm install
 
 ### Run Tests
 
-Run the test suite using the configured npm script:
+Execute on BrowserStack (Cloud):
 
 ```bash
-npm run wdio
+npm run test:bstack
+# or default script
+npm test
 ```
 
-Or execute WebdriverIO directly:
+Execute on Local Android Emulator / Device:
 
 ```bash
-npx wdio run wdio.conf.ts
+npm run test:local
 ```
 
 ---
@@ -173,6 +181,7 @@ This keeps test data isolated from the test implementation.
 * Appium with UiAutomator2
 * Screen Object Model architecture
 * Cloud execution with BrowserStack App Automate
+* Modular configuration supporting both Cloud (BrowserStack) and Local Appium execution
 * Reusable test data fixtures
 * Automated CI/CD with GitHub Actions
 * Secure credentials management through environment variables and GitHub Secrets
