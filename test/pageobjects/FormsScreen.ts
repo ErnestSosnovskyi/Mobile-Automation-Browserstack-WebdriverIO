@@ -22,23 +22,25 @@ class FormsScreen extends BaseScreen {
   }
 
   get dropdownOption() {
-    return $('//*[@text="webdriver.io is awesome"]');
+    return $('android=new UiSelector().text("webdriver.io is awesome")');
+  }
+
+  get dropdownSelectedValue() {
+    return $(
+      'android=new UiSelector().description("Dropdown").childSelector(new UiSelector().className("android.widget.EditText"))',
+    );
   }
 
   async enterText(text: string) {
-    await this.textInput.waitForDisplayed({ timeout: 10000 });
     await this.textInput.setValue(text);
   }
 
   async toggleSwitch() {
-    await this.switchButton.waitForDisplayed({ timeout: 10000 });
     await this.switchButton.click();
   }
 
   async selectOption() {
-    await this.dropdown.waitForDisplayed({ timeout: 10000 });
     await this.dropdown.click();
-    await this.dropdownOption.waitForDisplayed({ timeout: 10000 });
     await this.dropdownOption.click();
   }
 }

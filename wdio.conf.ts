@@ -1,4 +1,4 @@
-import 'dotenv/config';
+/* import 'dotenv/config';
 
 export const config: WebdriverIO.Config = {
     user: process.env.BROWSERSTACK_USERNAME,
@@ -6,7 +6,7 @@ export const config: WebdriverIO.Config = {
 
     hostname: 'hub.browserstack.com',
     specs: [
-        './test/specs/**/*.ts'
+        './test/specs/**.ts'
     ],
     exclude: [],
     maxInstances: 1,
@@ -36,4 +36,8 @@ export const config: WebdriverIO.Config = {
         ui: 'bdd',
         timeout: 60000
     }
-}
+}*/
+
+import { config as bstackConfig } from "./wdio.browserstack.conf";
+
+export const config: WebdriverIO.Config = bstackConfig;

@@ -3,10 +3,14 @@ import FormsScreen from "../pageobjects/FormsScreen";
 import { CREDENTIALS, FORM_DATA } from "../data/testData";
 
 describe("Mobile Native App Testing Suite", () => {
+  afterEach(async () => {
+    await LoginScreen.dismissAlertIfPresent();
+  });
+
   it("1. Should login successfully with valid credentials", async () => {
     await LoginScreen.openLogin();
     await LoginScreen.login(CREDENTIALS.validUser.email, CREDENTIALS.validUser.password);
-    await LoginScreen.successAlertTitle.waitForDisplayed({ timeout: 15000 });
+    await expect(LoginScreen.successAlertTitle).toBeDisplayed();
     await expect(LoginScreen.successAlertTitle).toHaveText("Success");
     await LoginScreen.successAlertButton.click();
   });
@@ -14,7 +18,7 @@ describe("Mobile Native App Testing Suite", () => {
   it("2. Should show error message on invalid email or password format", async () => {
     await LoginScreen.openLogin();
     await LoginScreen.login(CREDENTIALS.invalidUser.email, CREDENTIALS.invalidUser.password);
-    await LoginScreen.errorMessage.waitForDisplayed({ timeout: 10000 });
+    await expect(LoginScreen.errorMessage).toBeDisplayed();
     await expect(LoginScreen.errorMessage).toHaveText(
       "Please enter a valid email address",
     );
@@ -24,7 +28,7 @@ describe("Mobile Native App Testing Suite", () => {
     await FormsScreen.openForms();
     await FormsScreen.enterText(FORM_DATA.sampleText);
 
-    await FormsScreen.textResult.waitForDisplayed({ timeout: 10000 });
+    await expect(FormsScreen.textResult).toBeDisplayed();
     await expect(FormsScreen.textResult).toHaveText(FORM_DATA.sampleText);
   });
 
@@ -32,7 +36,6 @@ describe("Mobile Native App Testing Suite", () => {
     await FormsScreen.openForms();
     await FormsScreen.toggleSwitch();
 
-    await FormsScreen.switchText.waitForDisplayed({ timeout: 10000 });
     await expect(FormsScreen.switchText).toHaveText(
       "Click to turn the switch OFF",
     );
@@ -42,10 +45,9 @@ describe("Mobile Native App Testing Suite", () => {
     await FormsScreen.openForms();
     await FormsScreen.selectOption();
 
-    const dropdownValue = await $(
-      '//android.view.ViewGroup[@content-desc="Dropdown"]//android.widget.EditText',
+    await expect(FormsScreen.dropdownSelectedValue).toBeDisplayed();
+    await expect(FormsScreen.dropdownSelectedValue).toHaveText(
+      FORM_DATA.dropdownOption,
     );
-    await dropdownValue.waitForDisplayed({ timeout: 10000 });
-    await expect(dropdownValue).toHaveText(FORM_DATA.dropdownOption);
   });
 });
